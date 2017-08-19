@@ -1,5 +1,5 @@
 # Bianca
-Bianca is a simple [Discord](https://discordapp.com/) bot.
+Bianca is a simple [Discord](https://discordapp.com/) bot written in Python.
 
 ## Features
 - Event reminders/"message of the days" with custom messages at specific times (once, every Friday, every year etc.)
