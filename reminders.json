@@ -1,0 +1,12 @@
+{
+  "events": [
+    {
+      "at": "WKD-Thu TIME-20:00",
+      "message": "[MESSAGE HERE]"
+    },
+    {
+      "at": "WKD-Thu TIME-20:55",
+      "message": "[MESSAGE HERE]"
+    }
+  ]
+}

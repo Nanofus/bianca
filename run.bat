@@ -1,0 +1,2 @@
+python bianca.py
+pause
