@@ -10,7 +10,7 @@ Bianca is a simple [Discord](https://discordapp.com/) bot.
 2. `pip install discord`
 3. `pip install pytz`
 4. `pip install feedparser`
-5. [Create a new bot](https://discordapp.com/developers/applications/me)
+5. [Create a new bot](https://discordapp.com/developers/applications/me) and invite it to your channel
 6. Insert your text channel's ID and your bot's token into `config.json`
 7. Run `run.bat`
 
