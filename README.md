@@ -19,6 +19,6 @@ Bianca is a simple [Discord](https://discordapp.com/) bot written in Python.
 - Add your RSS feeds into `rss.json`
 - Add your event reminders and messages into `reminders.json`
   - Set the time for the message using prefixes as seen in the example file. The allowed prefixes are `WKD` (weekday), `DAY`, `MONTH`, `YEAR` and `TIME` (hours and minutes). When all of the defined values match the current time, the message is sent. Remember to always define `TIME`, otherwise the message is sent every minute.
-- Change the update interval and timezone in `config.json`
+- Change the update interval (seconds) and timezone in `config.json`
 
 Bianca has no commands inside Discord at the moment.
