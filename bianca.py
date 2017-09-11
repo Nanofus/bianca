@@ -7,13 +7,13 @@ import feedparser
 
 client = discord.Client()
 
-with open('reminders.json', encoding='utf-8') as data_file:
+with open("reminders.json", encoding="utf-8") as data_file:
     reminders = json.load(data_file)
 
-with open('rss.json', encoding='utf-8') as data_file:
+with open("rss.json", encoding="utf-8") as data_file:
     rss = json.load(data_file)
 
-with open('config.json', encoding='utf-8') as config_file:
+with open("config.json", encoding="utf-8") as config_file:
     config = json.load(config_file)
 tz = pytz.timezone(config["timezone"])
 
@@ -72,5 +72,11 @@ def is_current(event_time):
             return False
     return True
 
-client.loop.create_task(check())
-client.run(config["client_token"])
+while True:
+    try:
+        client.loop.create_task(check())
+        client.run(config["client_token"])
+    except:
+        pass
+    else:
+        break
