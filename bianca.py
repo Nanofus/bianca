@@ -5,8 +5,6 @@ import datetime
 import pytz
 import feedparser
 
-client = discord.Client()
-
 with open("reminders.json", encoding="utf-8") as data_file:
     reminders = json.load(data_file)
 
@@ -16,6 +14,10 @@ with open("rss.json", encoding="utf-8") as data_file:
 with open("config.json", encoding="utf-8") as config_file:
     config = json.load(config_file)
 tz = pytz.timezone(config["timezone"])
+
+client = discord.Client()
+current_minute = datetime.datetime.now(tz).strftime("%H:%M")
+sent_this_minute = []
 
 async def check():
     await client.wait_until_ready()
@@ -28,7 +30,7 @@ async def check():
 
 async def check_events(channel):
     for event in reminders["events"]:
-        if is_current(event["at"]):
+        if is_current(event["at"]) and not_sent_this_minute(event["message"]):
             await client.send_message(channel, event["message"])
 
 async def check_feeds(channel):
@@ -71,6 +73,19 @@ def is_current(event_time):
         if time.split("-")[0] == "TIME" and time.split("-")[1] != datetime.datetime.now(tz).strftime("%H:%M"):
             return False
     return True
+
+def not_sent_this_minute(event):
+    if current_minute != datetime.datetime.now(tz).strftime("%H:%M"):
+        print("Minute changed")
+        current_minute = datetime.datetime.now(tz).strftime("%H:%M")
+        sent_this_minute = []
+        return True
+    else:
+        if event not in sent_this_minute:
+            sent_this_minute.append(event)
+            return True
+        else:
+            return False
 
 while True:
     try:
