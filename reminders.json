@@ -2,11 +2,13 @@
   "events": [
     {
       "at": "WKD-Thu TIME-20:00",
-      "message": "[MESSAGE HERE]"
+      "message": "[MESSAGE HERE] {notified_roles}",
+      "notified_roles": ["everyone"]
     },
     {
       "at": "WKD-Thu TIME-20:55",
-      "message": "[MESSAGE HERE]"
+      "message": "[MESSAGE HERE] {notified_roles}",
+      "notified_roles": ["everyone"]
     }
   ]
 }

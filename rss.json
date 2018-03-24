@@ -3,7 +3,8 @@
     {
       "name": "[FEED NAME HERE]",
       "url": "[FEED URL HERE]",
-      "message": "New post **{title}** from the author {author}\n{url}"
+      "message": "New post **{title}** from the author {author} {notified_roles}\n{url}",
+      "notified_roles": ["everyone"]
     }
   ]
 }

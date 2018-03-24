@@ -1,0 +1,3 @@
+discord
+pytz
+feedparser

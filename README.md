@@ -7,12 +7,10 @@ Bianca is a simple [Discord](https://discordapp.com/) bot written in Python.
 
 ## Installation
 1. `git clone https://github.com/Nanofus/bianca.git`
-2. `pip install discord`
-3. `pip install pytz`
-4. `pip install feedparser`
-5. [Create a new bot](https://discordapp.com/developers/applications/me) and invite it to your server
-6. Insert your text channel's ID and your bot's token into `config.json`
-7. Run `run.bat` or `python bianca.py`
+2. `pip install -r requirements.txt`
+3. [Create a new bot](https://discordapp.com/developers/applications/me) and invite it to your server
+4. Insert your text channel's ID and your bot's token into `config.json`
+5. Run `run.bat` or `python bianca.py`
 
 ## Usage
 

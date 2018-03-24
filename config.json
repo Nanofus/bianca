@@ -2,5 +2,5 @@
   "channel_id": "[YOUR CHANNEL ID HERE]",
   "client_token": "[YOUR BOT'S TOKEN HERE]",
   "timezone": "Europe/Helsinki",
-  "refresh_interval": 20
+  "refresh_interval": 2
 }
