@@ -1,5 +1,7 @@
 {
   "channel_id": "[YOUR CHANNEL ID HERE]",
+  "debug_channel_id": "[optional]",
+  "debug_mode": false,
   "client_token": "[YOUR BOT'S TOKEN HERE]",
   "timezone": "Europe/Helsinki",
   "refresh_interval": 2
