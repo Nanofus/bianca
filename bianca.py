@@ -40,7 +40,6 @@ async def main_loop():
     while not client.is_closed:
         if current_minute != datetime.datetime.now(tz).strftime("%H:%M"):
             current_minute = datetime.datetime.now(tz).strftime("%H:%M")
-            print(current_minute)
             await check_feeds(channel)
             await check_events(channel)
         await asyncio.sleep(config["refresh_interval"])
@@ -50,7 +49,7 @@ async def main_loop():
 async def check_events(channel):
     for event in reminders["events"]:
         if is_current(event["at"]):
-            print("Event triggered: " + event["message"])
+            print(get_printable_timestamp() + " Event triggered: " + event["message"])
             await client.send_message(channel, event["message"]
                 .replace("{notified_roles}"," ".join(str(role) for role in get_mentions(feed["notified_roles"]))))
 
@@ -93,7 +92,7 @@ async def check_feeds(channel):
         with open("rss-seen.txt","a+") as f:
             f.write(name + "\n")
     for message in message_queue:
-        print("Feed notification: " + message)
+        print(get_printable_timestamp() + " Feed notification: " + message)
         await client.send_message(channel, message)
 
 # Respond to messages
@@ -119,6 +118,9 @@ def get_mentions(roles):
             role_mentions.append('@here')
     return role_mentions
 
+def get_printable_timestamp():
+    return datetime.datetime.now(tz).strftime("%d.%m.%Y %H:%M")
+
 # Run when ready
 
 @client.event
@@ -128,6 +130,7 @@ async def on_ready():
     print("\nLogged in as")
     print(client.user.name)
     print(client.user.id)
+    print("\nStarted at " + get_printable_timestamp())
     print("\n------\n")
 
 # Start the program
