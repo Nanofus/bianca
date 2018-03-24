@@ -4,6 +4,7 @@ Bianca is a simple [Discord](https://discordapp.com/) bot written in Python.
 ## Features
 - Event reminders/"message of the days" with custom messages at specific times (once, every Friday, every year etc.)
 - Notifications for any number of RSS feeds with custom messages
+- Pinging specific roles, `@everyone` or `@here` whenever a reminder or RSS notification is posted
 
 ## Installation
 1. `git clone https://github.com/Nanofus/bianca.git`
@@ -17,6 +18,6 @@ Bianca is a simple [Discord](https://discordapp.com/) bot written in Python.
 - Add your RSS feeds into `rss.json`
 - Add your event reminders and messages into `reminders.json`
   - Set the time for the message using prefixes as seen in the example file. The allowed prefixes are `WKD` (weekday), `DAY`, `MONTH`, `YEAR` and `TIME` (hours and minutes). When all of the defined values match the current time, the message is sent. Remember to always define `TIME`, otherwise the message is sent every minute.
-- Change the update interval (seconds) and timezone in `config.json`
+- Change the timezone in `config.json`
 
-Bianca has no commands inside Discord at the moment.
+Bianca has no commands inside Discord at the moment, but adding events and RSS feeds through Discord is planned.
