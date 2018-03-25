@@ -1,10 +1,11 @@
 {
-  "rss_feeds": [
+  "feeds": [
     {
       "name": "[FEED NAME HERE]",
       "url": "[FEED URL HERE]",
       "message": "New post **{title}** from the author {author} {notified_roles}\n{url}",
-      "notified_roles": ["everyone"]
+      "notified_roles": ["everyone"],
+      "channel_id": "[CHANNEL ID HERE or leave blank to post to default channel]"
     }
   ]
 }

@@ -10,9 +10,9 @@ import feedparser
 with open("reminders.json", encoding="utf-8") as data_file:
     reminders = json.load(data_file)
 
-# Load RSS feeds
-with open("rss.json", encoding="utf-8") as data_file:
-    rss = json.load(data_file)
+# Load RSS and Atom feeds
+with open("feeds.json", encoding="utf-8") as data_file:
+    feeds = json.load(data_file)
 
 # Load general configuration
 with open("config.json", encoding="utf-8") as config_file:
@@ -49,7 +49,7 @@ async def main_loop():
 async def check_events(channel):
     for event in reminders["events"]:
         if is_current(event["at"]):
-            print(get_printable_timestamp() + " Event triggered: " + event["message"])
+            print((get_printable_timestamp() + " Event triggered: " + event["message"] + "\n").encode("utf-8"))
             await client.send_message(channel, event["message"]
                 .replace("{notified_roles}"," ".join(str(role) for role in get_mentions(feed["notified_roles"]))))
 
@@ -73,27 +73,31 @@ def is_current(event_time):
 async def check_feeds(channel):
     global client
     global server
-    with open("rss-seen.txt") as f:
+    with open("feeds-seen.txt") as f:
         known_items = f.readlines()
     known_items = [x.strip() for x in known_items]
     message_names = []
+    message_channels = []
     message_queue = []
-    for feed in rss["rss_feeds"]:
+    for feed in feeds["feeds"]:
         feed_data = feedparser.parse(feed["url"])
         for item in feed_data["entries"]:
-            if feed["name"] + "-" + item["post-id"] not in known_items:
-                message_names.append(feed["name"] + "-" + item["post-id"])
+            if feed["name"] + " - " + item["link"] not in known_items:
+                message_names.append(feed["name"] + " - " + item["link"])
+                if feed["channel_id"] is not "":
+                    message_channels.append(feed["channel_id"])
+                else:
+                    message_channels.append(channel.id)
                 message_queue.append(feed["message"]
                     .replace("{author}",item["author"])
                     .replace("{url}",item["link"])
                     .replace("{title}",item["title"])
                     .replace("{notified_roles}"," ".join(str(role) for role in get_mentions(feed["notified_roles"]))))
-    for name in message_names:
-        with open("rss-seen.txt","a+") as f:
+    for message, name, channel_id in zip(message_queue, message_names, message_channels):
+        with open("feeds-seen.txt","a+") as f:
             f.write(name + "\n")
-    for message in message_queue:
-        print(get_printable_timestamp() + " Feed notification: " + message)
-        await client.send_message(channel, message)
+        print((get_printable_timestamp() + " Feed notification: " + message + "\n").encode("utf-8"))
+        await client.send_message(server.get_channel(channel_id), message)
 
 # Respond to messages
 
