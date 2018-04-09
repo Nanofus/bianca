@@ -51,7 +51,7 @@ async def check_events(channel):
         if is_current(event["at"]):
             print((get_printable_timestamp() + " Event triggered: " + event["message"] + "\n").encode("utf-8"))
             await client.send_message(channel, event["message"]
-                .replace("{notified_roles}"," ".join(str(role) for role in get_mentions(feed["notified_roles"]))))
+                .replace("{notified_roles}"," ".join(str(role) for role in get_mentions(event["notified_roles"]))))
 
 def is_current(event_time):
     times = event_time.split(" ")
