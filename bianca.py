@@ -27,6 +27,7 @@ server = None
 # Main loop
 
 async def main_loop():
+    log("Initializing main loop.")
     global current_minute
     global server
     await client.wait_until_ready()
@@ -37,21 +38,28 @@ async def main_loop():
         channel = discord.Object(id=config["channel_id"])
     for s in client.servers:
         server = s
+    log("Main loop initialized. Starting main loop.")
     while not client.is_closed:
         if current_minute != datetime.datetime.now(tz).strftime("%H:%M"):
             current_minute = datetime.datetime.now(tz).strftime("%H:%M")
+            log("Minute changed, starting checks.")
             await check_feeds(channel)
             await check_events(channel)
+            log("Checks done for the minute.")
+            log("--------")
         await asyncio.sleep(config["refresh_interval"])
 
 # Check for new events
 
 async def check_events(channel):
+    log("Checking events...")
     for event in reminders["events"]:
         if is_current(event["at"]):
-            print((get_printable_timestamp() + " Event triggered: " + event["message"] + "\n").encode("utf-8"))
+            log("Event triggered: " + event["message"] + "\n")
             await client.send_message(channel, event["message"]
                 .replace("{notified_roles}"," ".join(str(role) for role in get_mentions(event["notified_roles"]))))
+            log("Event notification sent.")
+    log("Events checked.")
 
 def is_current(event_time):
     times = event_time.split(" ")
@@ -71,6 +79,7 @@ def is_current(event_time):
 # Check for new feeds
 
 async def check_feeds(channel):
+    log("Checking feeds...")
     global client
     global server
     with open("feeds-seen.txt") as f:
@@ -83,6 +92,7 @@ async def check_feeds(channel):
         feed_data = feedparser.parse(feed["url"])
         for item in feed_data["entries"]:
             if feed["name"] + " - " + item["link"] not in known_items:
+                log("Feed triggered: " + feed["name"] + "\n")
                 message_names.append(feed["name"] + " - " + item["link"])
                 if feed["channel_id"] is not "":
                     message_channels.append(feed["channel_id"])
@@ -96,8 +106,10 @@ async def check_feeds(channel):
     for message, name, channel_id in zip(message_queue, message_names, message_channels):
         with open("feeds-seen.txt","a+") as f:
             f.write(name + "\n")
-        print((get_printable_timestamp() + " Feed notification: " + message + "\n").encode("utf-8"))
+        log("Sending feed notification: " + message + "\n")
         await client.send_message(server.get_channel(channel_id), message)
+        log("Feed notification sent.")
+    log("Feeds checked.")
 
 # Respond to messages
 
@@ -122,28 +134,33 @@ def get_mentions(roles):
             role_mentions.append('@here')
     return role_mentions
 
+def log(string):
+    print("[" + get_printable_timestamp() + "] " + string)
+
 def get_printable_timestamp():
-    return datetime.datetime.now(tz).strftime("%d.%m.%Y %H:%M")
+    return datetime.datetime.now(tz).strftime("%d.%m.%Y %H:%M:%S")
 
 # Run when ready
 
 @client.event
 async def on_ready():
-    print("\nBIANCA DISCORD BOT")
+    print("\n\nBIANCA DISCORD BOT")
     print("https://github.com/Nanofus/bianca")
     print("\nLogged in as")
     print(client.user.name)
     print(client.user.id)
-    print("\nStarted at " + get_printable_timestamp())
-    print("\n------\n")
+    print("\nStarted at " + get_printable_timestamp() + "\n")
 
 # Start the program
 
 while True:
     try:
+        log("Starting main task.")
+        client.logout()
         client.loop.create_task(main_loop())
         client.run(config["client_token"])
-    except:
-        pass
+    except Exception as e:
+        log("ERROR: " + str(e))
+        log("Attempting to restart...")
     else:
         break

@@ -1,6 +1,8 @@
 # Bianca
 Bianca is a simple self-hosted [Discord](https://discordapp.com/) bot written in Python.
 
+]]\\||** =
+
 ## Features
 - Event reminders/"message of the days" with custom messages at specific times (once, every Friday, every year etc.)
 - Notifications for any number of RSS/Atom feeds with custom messages
@@ -15,7 +17,7 @@ Bianca is a simple self-hosted [Discord](https://discordapp.com/) bot written in
 
 ## Usage
 
-- Add your RSS/Atom feeds into `rss.json`
+- Add your RSS/Atom feeds into `feeds.json`
 - Add your event reminders and messages into `reminders.json`
   - Set the time for the message using prefixes as seen in the example file. The allowed prefixes are `WKD` (weekday), `DAY`, `MONTH`, `YEAR` and `TIME` (hours and minutes). When all of the defined values match the current time, the message is sent. Remember to always define `TIME`, otherwise the message is sent every minute.
 - Change the timezone in `config.json`

@@ -1,2 +1,3 @@
+:start
 python bianca.py
-pause
+goto start
