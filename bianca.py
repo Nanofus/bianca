@@ -5,6 +5,7 @@ import json
 import datetime
 import pytz
 import feedparser
+import socket
 
 # Load reminders
 with open("reminders.json", encoding="utf-8") as data_file:
@@ -23,6 +24,7 @@ tz = pytz.timezone(config["timezone"])
 client = discord.Client()
 current_minute = datetime.datetime.now(tz).strftime("%H:%M")
 server = None
+socket.setdefaulttimeout(60)
 
 # Main loop
 
